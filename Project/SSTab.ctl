@@ -132,9 +132,9 @@ Private Function mclsSubclass_OnMessage(ByVal uMsg As Long, ByVal wParam As Long
 '        Dim Y As Long
 '        If Ambient.UserMode And WindowUnderMouse(X, Y) = hWnd Then
 '            If Y > mdblTabHeight Then
-'                'Result = MA_NOACTIVATEANDEAT
-'                'Exit Sub 'override the default and leave
-'                bEatIt = True
+'                'mclsSubclass_OnMessage = MA_NOACTIVATEANDEAT
+'                'Exit Sub '覆盖默认设置并离开
+'                bHandled = True
 '            End If
 '        End If
         
@@ -996,7 +996,6 @@ Private Sub Draw()
     DeleteObject UserControl.Image.Handle
     
     CalcTabRects
-    'CopyContainerBG ContainerHwnd, hwnd, hDC
     GetClientRect hwnd, tR
     DrawHead tR
     DrawInactiveTabs
@@ -1085,7 +1084,7 @@ Private Sub DrawInactiveTabs()
             
             '画非活动区域
             If eState = Hot Then
-                'mclsGdi.DrawGradientAlpha hDC, tR.Left, tR.Top, tR.Right - tR.Left, tR.Bottom - tR.Top, vbRed, mclrBackColor, Top_To_Bottom, 30
+                'mclsGdi.DrawGradient hDC, tR.Left, tR.Top, tR.Right - tR.Left, tR.Bottom - tR.Top, vbRed, mclrBackColor, dVertical
                 mclsGdi.DrawArea hDC, tR.Left, tR.Top, tR.Right - tR.Left, tR.Bottom - tR.Top, mclrTabActiveColor
             End If
             
@@ -1167,9 +1166,9 @@ Private Function GetTabImageSize(ByVal lngTabIndex As Long) As Long
 
     LSet tR = mTabs(lngTabIndex).Area
     If lngTabIndex <> mlngTabIndex Then
-        tR.Top = tR.Top + 3 'inactive Tabs have a slightly lowered topOffset
+        tR.Top = tR.Top + 3 '非活动选项卡的顶偏移量稍微降低
     Else
-        tR.Bottom = tR.Bottom + 1 'active Tabs have their Bottom-lines shifted 1 pixel downwards
+        tR.Bottom = tR.Bottom + 1 '活动标签页的底线向下移动1个像素
     End If
     
     lngSize = (tR.Bottom - tR.Top) * 0.8 - 1
