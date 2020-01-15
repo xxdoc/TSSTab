@@ -1,0 +1,3 @@
+VBGROUP 5.0
+Project=..\Project\TSSTab.vbp
+StartupProject=vbpTest.vbp
